@@ -245,6 +245,10 @@
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V3h4v8h3l-5 5zm-7 3h14v2H5v-2z"/></svg>
       <span class="tx"><span class="s" data-i18n="dl.iosSmall"></span><span class="b" data-i18n="dl.iosBig"></span></span>
     </a>
+    <a class="dl ghost" id="dlAltstore" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      <span class="tx"><span class="s" data-i18n="dl.altSmall"></span><span class="b" data-i18n="dl.altBig"></span></span>
+    </a>
   </div>
   <p class="vhint reveal" data-delay="5" data-i18n="hero.hint"></p>
 </div>
@@ -332,7 +336,8 @@
       "hero.sub1": "匿名校园社区客户端", "hero.sub2": "iOS 与 Android 双端", "hero.sub3": "由社区基于公开接口重建",
       "hero.b1": "时间线 · 热门", "hero.b2": "匿名身份", "hero.b3": "深夜食堂",
       "dl.androidSmall": "Android 安装包", "dl.androidBig": "下载 APK",
-      "dl.iosSmall": "iOS 安装包", "dl.iosBig": "下载 IPA",
+      "dl.iosSmall": "iOS · 手动下载", "dl.iosBig": "下载 IPA",
+      "dl.altSmall": "iOS · 已装 AltStore", "dl.altBig": "AltStore 一键装",
       "hero.hint": "下载后请按下方教程安装 · iOS 需自行签名",
       "feat.kick": "Features",
       "feat.title": "你需要的，都在这里", "feat.lead": "与官方客户端一致的核心体验",
@@ -365,7 +370,8 @@
       "hero.sub1": "Anonymous campus community client", "hero.sub2": "iOS & Android", "hero.sub3": "rebuilt by the community from public APIs",
       "hero.b1": "Timeline · Trending", "hero.b2": "Anonymous identities", "hero.b3": "Late-night diner",
       "dl.androidSmall": "Android package", "dl.androidBig": "Download APK",
-      "dl.iosSmall": "iOS package", "dl.iosBig": "Download IPA",
+      "dl.iosSmall": "iOS · manual", "dl.iosBig": "Download IPA",
+      "dl.altSmall": "iOS · AltStore installed", "dl.altBig": "Open in AltStore",
       "hero.hint": "After downloading, follow the guide below · iOS requires self-signing",
       "feat.kick": "Features",
       "feat.title": "Everything you need", "feat.lead": "The same core experience as the official client",
@@ -418,6 +424,9 @@
 
   document.getElementById("dlAndroid").href = DL_APK;
   document.getElementById("dlIos").href = DL_IPA;
+  // 已装 AltStore 时，点这个直接跳进 AltStore 安装最新 IPA
+  document.getElementById("dlAltstore").href =
+    "altstore://install?url=" + encodeURIComponent(DL_IPA);
   document.getElementById("ghLink").href = REPO;
 
   // 按访客系统高亮对应的下载按钮，并排到前面
@@ -428,10 +437,16 @@
     var isAndroid = /Android/i.test(ua);
     var aBtn = document.getElementById("dlAndroid");
     var iBtn = document.getElementById("dlIos");
+    var altBtn = document.getElementById("dlAltstore");
     if (isIOS && !isAndroid) {
-      iBtn.className = "dl primary";
+      // iOS：AltStore 一键为主，手动下载 IPA 次之，APK 最后
+      altBtn.className = "dl primary";
+      iBtn.className = "dl ghost";
       aBtn.className = "dl ghost";
-      iBtn.parentNode.insertBefore(iBtn, aBtn);
+      var dls = altBtn.parentNode;
+      dls.appendChild(altBtn);
+      dls.appendChild(iBtn);
+      dls.appendChild(aBtn);
     }
     // Android 与桌面：保持默认（Android 高亮、在前）
   })();
