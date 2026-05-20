@@ -6,182 +6,263 @@
 <title>亦可赛艇 · treehole</title>
 <meta name="description" content="亦可赛艇 treehole — 交大树洞移动客户端，下载与安装" />
 <link rel="icon" href="./assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --indigo: #6366f1;
-    --violet: #5b21b6;
-    --ink: #1a202c;
-    --muted: #6b7280;
-    --bg: #ffffff;
-    --soft: #f5f6fa;
-    --border: #e5e7eb;
-    --radius: 16px;
+    --bg0: #060b14;
+    --bg1: #0b1322;
+    --ink: #eef4ff;
+    --muted: #8898b4;
+    --faint: #5a6985;
+    --line: rgba(255,255,255,0.08);
+    --aqua: #46b8ff;
+    --indigo: #7d8bff;
+    --glass: rgba(255,255,255,0.035);
+    --grad: linear-gradient(135deg, #46b8ff 0%, #6f7cff 100%);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    font-family: "Outfit", -apple-system, BlinkMacSystemFont, "PingFang SC",
       "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg0);
     color: var(--ink);
-    background: var(--bg);
-    line-height: 1.65;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-  a { color: inherit; }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 22px; }
 
-  /* header */
+  /* ---- atmosphere ---- */
+  .bg { position: fixed; inset: 0; z-index: -2; overflow: hidden; }
+  .bg::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(720px 520px at 50% -8%, rgba(70,184,255,0.22), transparent 70%),
+      radial-gradient(620px 620px at 88% 18%, rgba(125,139,255,0.16), transparent 70%),
+      radial-gradient(800px 700px at 10% 92%, rgba(70,184,255,0.10), transparent 70%),
+      linear-gradient(180deg, var(--bg1), var(--bg0) 60%);
+  }
+  .bubbles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  .bubble {
+    position: absolute; bottom: -60px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, rgba(255,255,255,0.35), rgba(70,184,255,0.06));
+    border: 1px solid rgba(255,255,255,0.06);
+    animation: rise linear infinite;
+    opacity: 0;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0) scale(0.7); opacity: 0; }
+    12%  { opacity: 0.6; }
+    88%  { opacity: 0.5; }
+    100% { transform: translateY(-104vh) scale(1.1); opacity: 0; }
+  }
+
+  /* ---- header ---- */
   header {
-    position: sticky; top: 0; z-index: 10;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: saturate(180%) blur(12px);
-    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(8,13,22,0.62);
+    backdrop-filter: saturate(160%) blur(16px);
+    border-bottom: 1px solid var(--line);
   }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 60px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
-  .brand img { width: 30px; height: 30px; border-radius: 8px; }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 16px; letter-spacing: .2px; }
+  .brand img { width: 32px; height: 32px; border-radius: 9px; }
   .langbtn {
-    border: 1px solid var(--border); background: #fff; color: var(--ink);
-    border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer;
-    font-weight: 600;
+    border: 1px solid var(--line); background: var(--glass); color: var(--ink);
+    border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit; transition: .2s;
   }
-  .langbtn:hover { border-color: var(--indigo); color: var(--indigo); }
+  .langbtn:hover { border-color: var(--aqua); color: var(--aqua); }
 
-  /* hero */
-  .hero { text-align: center; padding: 64px 0 52px; }
+  /* ---- hero ---- */
+  .hero { text-align: center; padding: 90px 0 70px; }
+  .halo { position: relative; display: inline-block; margin-bottom: 30px; }
+  .halo::after {
+    content: ""; position: absolute; inset: -38px; border-radius: 50%; z-index: -1;
+    background: radial-gradient(circle, rgba(70,184,255,0.55), transparent 68%);
+    filter: blur(14px);
+  }
   .hero .logo {
-    width: 96px; height: 96px; border-radius: 22px; margin-bottom: 22px;
-    box-shadow: 0 12px 32px rgba(99,102,241,0.28);
+    width: 104px; height: 104px; border-radius: 26px;
+    box-shadow: 0 20px 50px rgba(70,184,255,0.32);
   }
-  .hero h1 { font-size: 34px; letter-spacing: -0.5px; }
-  .hero .sub { color: var(--muted); font-size: 16px; margin-top: 10px; }
+  .hero h1 {
+    font-size: clamp(34px, 6.4vw, 52px); font-weight: 800;
+    letter-spacing: -1.2px; line-height: 1.12;
+  }
+  .hero h1 .accent {
+    background: var(--grad); -webkit-background-clip: text;
+    background-clip: text; color: transparent;
+  }
+  .hero .sub {
+    color: var(--muted); font-size: clamp(15px, 2.4vw, 18px);
+    margin-top: 16px; font-weight: 400;
+  }
+  .badges { display: flex; gap: 8px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+  .badge {
+    font-size: 12px; color: var(--faint); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 13px; background: var(--glass);
+  }
 
-  /* download buttons */
-  .dls { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+  /* ---- download ---- */
+  .dls { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
   .dl {
-    display: flex; align-items: center; gap: 12px; text-decoration: none;
-    padding: 13px 22px; border-radius: 14px; min-width: 210px;
+    display: flex; align-items: center; gap: 13px;
+    padding: 15px 26px; border-radius: 15px; min-width: 230px;
+    transition: transform .18s, box-shadow .18s;
   }
-  .dl .ic { font-size: 26px; line-height: 1; }
-  .dl .tx { text-align: left; }
-  .dl .tx .s { font-size: 11px; opacity: 0.8; display: block; }
-  .dl .tx .b { font-size: 16px; font-weight: 700; }
-  .dl.primary {
-    background: linear-gradient(135deg, var(--indigo), var(--violet));
-    color: #fff;
+  .dl svg { width: 24px; height: 24px; flex: none; }
+  .dl .tx { text-align: left; line-height: 1.25; }
+  .dl .tx .s { font-size: 11.5px; display: block; opacity: .82; font-weight: 400; }
+  .dl .tx .b { font-size: 16.5px; font-weight: 700; }
+  .dl.primary { background: var(--grad); color: #04203b; box-shadow: 0 12px 30px rgba(70,184,255,0.3); }
+  .dl.ghost { background: var(--glass); color: var(--ink); border: 1px solid var(--line); }
+  .dl:hover { transform: translateY(-3px); }
+  .dl.primary:hover { box-shadow: 0 16px 38px rgba(70,184,255,0.42); }
+  .dl.ghost:hover { border-color: var(--aqua); }
+  .vhint { color: var(--faint); font-size: 12.5px; margin-top: 20px; }
+
+  /* ---- sections ---- */
+  section { padding: 70px 0; }
+  .kick {
+    text-align: center; font-size: 12.5px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--aqua); margin-bottom: 10px;
   }
-  .dl.dark { background: var(--ink); color: #fff; }
-  .dl:hover { transform: translateY(-2px); transition: transform .15s; }
-  .vhint { color: var(--muted); font-size: 12px; margin-top: 16px; }
+  h2 {
+    font-size: clamp(25px, 4vw, 33px); font-weight: 800; text-align: center;
+    letter-spacing: -.6px;
+  }
+  .lead { text-align: center; color: var(--muted); font-size: 14.5px; margin-top: 10px; }
 
-  /* sections */
-  section { padding: 46px 0; }
-  section.alt { background: var(--soft); }
-  h2 { font-size: 23px; text-align: center; margin-bottom: 8px; }
-  .lead { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 30px; }
-
-  /* features */
-  .grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  /* ---- features ---- */
+  .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 42px; }
   .card {
-    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 20px;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 18px;
+    padding: 24px 22px; transition: transform .2s, border-color .2s, background .2s;
   }
-  .card .ci { font-size: 24px; }
-  .card h3 { font-size: 16px; margin: 10px 0 4px; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(70,184,255,0.4); background: rgba(70,184,255,0.05); }
+  .card .ico {
+    width: 44px; height: 44px; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; margin-bottom: 14px;
+    background: linear-gradient(135deg, rgba(70,184,255,0.18), rgba(125,139,255,0.18));
+    border: 1px solid rgba(70,184,255,0.25);
+  }
+  .card .ico svg { width: 22px; height: 22px; stroke: var(--aqua); }
+  .card h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 5px; }
   .card p { color: var(--muted); font-size: 13.5px; }
 
-  /* steps */
-  .steps { counter-reset: step; display: flex; flex-direction: column; gap: 14px; }
-  .step {
-    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 18px 20px 18px 58px; position: relative;
+  /* ---- install ---- */
+  .tabs { display: flex; gap: 8px; justify-content: center; margin: 36px 0 28px; }
+  .tab {
+    border: 1px solid var(--line); background: var(--glass); color: var(--muted);
+    border-radius: 999px; padding: 9px 22px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; transition: .2s;
   }
-  .step::before {
-    counter-increment: step; content: counter(step);
-    position: absolute; left: 16px; top: 16px;
-    width: 28px; height: 28px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--indigo), var(--violet));
-    color: #fff; font-weight: 700; font-size: 14px;
+  .tab.on { background: var(--grad); color: #04203b; border-color: transparent; }
+
+  .steps { display: flex; flex-direction: column; gap: 12px; counter-reset: step; }
+  .step {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: var(--glass); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 22px; transition: border-color .2s;
+  }
+  .step:hover { border-color: rgba(70,184,255,0.32); }
+  .step .num {
+    flex: none; counter-increment: step; width: 34px; height: 34px;
+    border-radius: 50%; background: var(--grad); color: #04203b;
+    font-weight: 800; font-size: 15px;
     display: flex; align-items: center; justify-content: center;
   }
-  .step h4 { font-size: 15px; margin-bottom: 3px; }
+  .step .num::before { content: counter(step); }
+  .step h4 { font-size: 15.5px; font-weight: 700; margin-bottom: 2px; }
   .step p { color: var(--muted); font-size: 13.5px; }
-  .step a { color: var(--indigo); font-weight: 600; }
-
-  .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 22px; }
-  .tab {
-    border: 1px solid var(--border); background: #fff; border-radius: 999px;
-    padding: 7px 18px; font-size: 13.5px; font-weight: 600; cursor: pointer;
-  }
-  .tab.on { background: var(--indigo); color: #fff; border-color: var(--indigo); }
 
   .note {
-    margin-top: 18px; padding: 14px 16px; border-radius: 12px;
-    background: #fef9ec; border: 1px solid #f5e2b8; font-size: 13px; color: #7a5b12;
+    margin-top: 20px; padding: 16px 18px; border-radius: 14px;
+    background: rgba(70,184,255,0.07); border: 1px solid rgba(70,184,255,0.22);
+    font-size: 13px; color: #b9d4ec;
   }
+  .note b { color: var(--aqua); }
 
-  footer {
-    border-top: 1px solid var(--border); padding: 28px 0;
-    text-align: center; color: var(--muted); font-size: 12.5px;
+  /* ---- footer ---- */
+  footer { border-top: 1px solid var(--line); padding: 40px 0 48px; text-align: center; }
+  footer .flogo { width: 34px; height: 34px; border-radius: 9px; opacity: .85; margin-bottom: 12px; }
+  footer p { color: var(--faint); font-size: 12.5px; }
+  footer a.gh {
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 14px;
+    color: var(--muted); font-size: 13px; border: 1px solid var(--line);
+    padding: 8px 16px; border-radius: 999px; transition: .2s;
   }
-  footer a { color: var(--indigo); text-decoration: none; }
+  footer a.gh:hover { border-color: var(--aqua); color: var(--aqua); }
+  footer a.gh svg { width: 16px; height: 16px; }
 
+  /* ---- reveal ---- */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s, transform .7s; }
+  .reveal.in { opacity: 1; transform: none; }
   .hidden { display: none !important; }
-  @media (max-width: 560px) {
-    .grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 27px; }
-  }
+
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
+<div class="bg"></div>
+<div class="bubbles" id="bubbles"></div>
+
 <header>
   <div class="wrap nav">
-    <div class="brand">
-      <img src="./assets/logo.png" alt="logo" />
-      <span>亦可赛艇 · treehole</span>
-    </div>
+    <div class="brand"><img src="./assets/logo.png" alt="" /><span>亦可赛艇 · treehole</span></div>
     <button class="langbtn" id="langBtn">English</button>
   </div>
 </header>
 
 <!-- HERO -->
 <div class="hero wrap">
-  <img class="logo" src="./assets/logo.png" alt="treehole" />
-  <h1 data-i18n="hero.title"></h1>
-  <p class="sub" data-i18n="hero.sub"></p>
-  <div class="dls">
+  <div class="halo reveal"><img class="logo" src="./assets/logo.png" alt="treehole" /></div>
+  <h1 class="reveal" data-delay="1">
+    <span data-i18n="hero.t1"></span><br /><span class="accent" data-i18n="hero.t2"></span>
+  </h1>
+  <p class="sub reveal" data-delay="2" data-i18n="hero.sub"></p>
+  <div class="badges reveal" data-delay="3">
+    <span class="badge" data-i18n="hero.b1"></span>
+    <span class="badge" data-i18n="hero.b2"></span>
+    <span class="badge" data-i18n="hero.b3"></span>
+  </div>
+  <div class="dls reveal" data-delay="4">
     <a class="dl primary" id="dlAndroid" href="#">
-      <span class="ic">🤖</span>
-      <span class="tx"><span class="s" data-i18n="dl.androidSmall"></span>
-      <span class="b" data-i18n="dl.androidBig"></span></span>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V3h4v8h3l-5 5zm-7 3h14v2H5v-2z"/></svg>
+      <span class="tx"><span class="s" data-i18n="dl.androidSmall"></span><span class="b" data-i18n="dl.androidBig"></span></span>
     </a>
-    <a class="dl dark" id="dlIos" href="#">
-      <span class="ic">🍎</span>
-      <span class="tx"><span class="s" data-i18n="dl.iosSmall"></span>
-      <span class="b" data-i18n="dl.iosBig"></span></span>
+    <a class="dl ghost" id="dlIos" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V3h4v8h3l-5 5zm-7 3h14v2H5v-2z"/></svg>
+      <span class="tx"><span class="s" data-i18n="dl.iosSmall"></span><span class="b" data-i18n="dl.iosBig"></span></span>
     </a>
   </div>
-  <p class="vhint" data-i18n="hero.hint"></p>
+  <p class="vhint reveal" data-delay="5" data-i18n="hero.hint"></p>
 </div>
 
 <!-- FEATURES -->
-<section class="alt">
+<section>
   <div class="wrap">
-    <h2 data-i18n="feat.title"></h2>
-    <p class="lead" data-i18n="feat.lead"></p>
+    <div class="kick reveal" data-i18n="feat.kick"></div>
+    <h2 class="reveal" data-i18n="feat.title"></h2>
+    <p class="lead reveal" data-i18n="feat.lead"></p>
     <div class="grid">
-      <div class="card"><div class="ci">📰</div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
         <h3 data-i18n="feat.f1t"></h3><p data-i18n="feat.f1d"></p></div>
-      <div class="card"><div class="ci">✍️</div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div>
         <h3 data-i18n="feat.f2t"></h3><p data-i18n="feat.f2d"></p></div>
-      <div class="card"><div class="ci">🎭</div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="4"/><circle cx="16" cy="15" r="4"/></svg></div>
         <h3 data-i18n="feat.f3t"></h3><p data-i18n="feat.f3d"></p></div>
-      <div class="card"><div class="ci">🔔</div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         <h3 data-i18n="feat.f4t"></h3><p data-i18n="feat.f4d"></p></div>
-      <div class="card"><div class="ci">🔍</div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
         <h3 data-i18n="feat.f5t"></h3><p data-i18n="feat.f5d"></p></div>
-      <div class="card"><div class="ci">🌗</div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></div>
         <h3 data-i18n="feat.f6t"></h3><p data-i18n="feat.f6d"></p></div>
     </div>
   </div>
@@ -190,200 +271,191 @@
 <!-- INSTALL -->
 <section>
   <div class="wrap">
-    <h2 data-i18n="install.title"></h2>
-    <p class="lead" data-i18n="install.lead"></p>
+    <div class="kick reveal" data-i18n="install.kick"></div>
+    <h2 class="reveal" data-i18n="install.title"></h2>
+    <p class="lead reveal" data-i18n="install.lead"></p>
 
-    <div class="tabs">
+    <div class="tabs reveal">
       <button class="tab on" id="tabIos" data-i18n="install.tabIos"></button>
       <button class="tab" id="tabAndroid" data-i18n="install.tabAndroid"></button>
     </div>
 
-    <!-- iOS -->
     <div id="paneIos">
       <div class="steps">
-        <div class="step"><h4 data-i18n="ios.s1t"></h4><p data-i18n="ios.s1d"></p></div>
-        <div class="step"><h4 data-i18n="ios.s2t"></h4><p data-i18n="ios.s2d"></p></div>
-        <div class="step"><h4 data-i18n="ios.s3t"></h4><p data-i18n="ios.s3d"></p></div>
-        <div class="step"><h4 data-i18n="ios.s4t"></h4><p data-i18n="ios.s4d"></p></div>
-        <div class="step"><h4 data-i18n="ios.s5t"></h4><p data-i18n="ios.s5d"></p></div>
-        <div class="step"><h4 data-i18n="ios.s6t"></h4><p data-i18n="ios.s6d"></p></div>
-        <div class="step"><h4 data-i18n="ios.s7t"></h4><p data-i18n="ios.s7d"></p></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s1t"></h4><p data-i18n="ios.s1d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s2t"></h4><p data-i18n="ios.s2d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s3t"></h4><p data-i18n="ios.s3d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s4t"></h4><p data-i18n="ios.s4d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s5t"></h4><p data-i18n="ios.s5d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s6t"></h4><p data-i18n="ios.s6d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="ios.s7t"></h4><p data-i18n="ios.s7d"></p></div></div>
       </div>
-      <div class="note" data-i18n="ios.note"></div>
+      <div class="note reveal" data-i18n="ios.note"></div>
     </div>
 
-    <!-- Android -->
     <div id="paneAndroid" class="hidden">
       <div class="steps">
-        <div class="step"><h4 data-i18n="and.s1t"></h4><p data-i18n="and.s1d"></p></div>
-        <div class="step"><h4 data-i18n="and.s2t"></h4><p data-i18n="and.s2d"></p></div>
-        <div class="step"><h4 data-i18n="and.s3t"></h4><p data-i18n="and.s3d"></p></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="and.s1t"></h4><p data-i18n="and.s1d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="and.s2t"></h4><p data-i18n="and.s2d"></p></div></div>
+        <div class="step reveal"><div class="num"></div><div><h4 data-i18n="and.s3t"></h4><p data-i18n="and.s3d"></p></div></div>
       </div>
-      <div class="note" data-i18n="and.note"></div>
+      <div class="note reveal" data-i18n="and.note"></div>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
+    <img class="flogo" src="./assets/logo.png" alt="" />
     <p data-i18n="footer.disc"></p>
-    <p style="margin-top:6px">
-      <a id="ghLink" href="#" target="_blank" rel="noopener">GitHub</a>
-    </p>
+    <a class="gh" id="ghLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.16.57.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2z"/></svg>
+      GitHub
+    </a>
   </div>
 </footer>
 
 <script>
-  // ====== 配置：下载 / 仓库地址 ======
   var RELEASES = "https://github.com/ayaka-notes/treehole-app/releases/latest";
   var REPO = "https://github.com/ayaka-notes/treehole-app";
 
-  // ====== i18n ======
   var I18N = {
     zh: {
-      "hero.title": "亦可赛艇 · 交大树洞",
-      "hero.sub": "匿名校园社区客户端 · 支持 iOS 与 Android",
-      "dl.androidSmall": "Android 安装包",
-      "dl.androidBig": "下载 APK",
-      "dl.iosSmall": "iOS 安装包",
-      "dl.iosBig": "下载 IPA",
-      "hero.hint": "下载后请按下方教程安装。iOS 需自行签名。",
-      "feat.title": "功能",
-      "feat.lead": "与官方客户端一致的核心体验",
-      "feat.f1t": "时间线与热门",
-      "feat.f1d": "浏览最新与最热主题帖，按版块、标签筛选。",
-      "feat.f2t": "发帖与回帖",
-      "feat.f2d": "发布主题帖、回帖、指定楼层回复。",
-      "feat.f3t": "匿名身份",
-      "feat.f3d": "领取、切换、删除匿名身份，发帖用所选身份。",
-      "feat.f4t": "消息通知",
-      "feat.f4d": "帖子被回复、系统通知，一站查看。",
-      "feat.f5t": "搜索",
-      "feat.f5d": "按关键词检索全站主题帖。",
-      "feat.f6t": "深色模式",
-      "feat.f6d": "跟随系统的明暗主题。",
-      "install.title": "安装教程",
-      "install.lead": "选择你的系统，按步骤操作",
-      "install.tabIos": "iOS 安装",
-      "install.tabAndroid": "Android 安装",
-      "ios.s1t": "下载 IPA 安装包",
-      "ios.s1d": "点击页面顶部「下载 IPA」，把文件存到电脑上。",
-      "ios.s2t": "在电脑上安装 AltServer",
-      "ios.s2d": "打开 altstore.io，下载并安装 AltServer（Windows 或 Mac 都行）。Windows 还需装好 iTunes 和 iCloud（Apple 官网版本，非微软商店版）。",
-      "ios.s3t": "用数据线连接 iPhone",
-      "ios.s3d": "把 iPhone 用数据线接到电脑，在手机上点「信任此电脑」。",
-      "ios.s4t": "安装 AltStore 到 iPhone",
-      "ios.s4d": "点电脑上 AltServer 图标（Windows 在右下角任务栏，Mac 在右上角菜单栏）→ Install AltStore → 选择你的设备 → 输入 Apple ID 登录。",
-      "ios.s5t": "信任开发者证书",
-      "ios.s5d": "iPhone 上打开「设置 → 通用 → VPN 与设备管理」，点你的 Apple ID，选「信任」。然后就能打开 AltStore 了。",
-      "ios.s6t": "用 AltStore 安装树洞",
-      "ios.s6d": "把第 1 步下载的 IPA 传到 iPhone（隔空投送 / 微信文件助手都行）。打开 AltStore → My Apps → 左上角「+」→ 选中那个 IPA → 等待安装完成。",
-      "ios.s7t": "完成，打开使用",
-      "ios.s7d": "桌面上会出现「亦可赛艇」图标，点开即可使用。",
+      "hero.t1": "亦可赛艇", "hero.t2": "交大树洞，随身一份",
+      "hero.sub": "匿名校园社区客户端 · iOS 与 Android 双端 · 由社区基于公开接口重建",
+      "hero.b1": "时间线 · 热门", "hero.b2": "匿名身份", "hero.b3": "深色模式",
+      "dl.androidSmall": "Android 安装包", "dl.androidBig": "下载 APK",
+      "dl.iosSmall": "iOS 安装包", "dl.iosBig": "下载 IPA",
+      "hero.hint": "下载后请按下方教程安装 · iOS 需自行签名",
+      "feat.kick": "Features",
+      "feat.title": "你需要的，都在这里", "feat.lead": "与官方客户端一致的核心体验",
+      "feat.f1t": "时间线与热门", "feat.f1d": "浏览最新与最热主题帖，按版块、标签筛选。",
+      "feat.f2t": "发帖与回帖", "feat.f2d": "发布主题帖、回帖、指定楼层精准回复。",
+      "feat.f3t": "匿名身份", "feat.f3d": "领取、切换、删除匿名身份，发帖用所选身份。",
+      "feat.f4t": "消息通知", "feat.f4d": "帖子被回复、系统通知，一站查看。",
+      "feat.f5t": "全站搜索", "feat.f5d": "按关键词检索全站主题帖。",
+      "feat.f6t": "深色模式", "feat.f6d": "明暗主题跟随系统，夜里刷洞不刺眼。",
+      "install.kick": "Get Started",
+      "install.title": "安装教程", "install.lead": "选择你的系统，跟着步骤走就行",
+      "install.tabIos": "iOS 安装", "install.tabAndroid": "Android 安装",
+      "ios.s1t": "下载 IPA 安装包", "ios.s1d": "点击页面顶部「下载 IPA」，把文件存到电脑上。",
+      "ios.s2t": "在电脑上安装 AltServer", "ios.s2d": "打开 altstore.io，下载并安装 AltServer（Windows 或 Mac 都行）。Windows 还需装好 iTunes 和 iCloud（Apple 官网版本，非微软商店版）。",
+      "ios.s3t": "用数据线连接 iPhone", "ios.s3d": "把 iPhone 用数据线接到电脑，在手机上点「信任此电脑」。",
+      "ios.s4t": "安装 AltStore 到 iPhone", "ios.s4d": "点电脑上 AltServer 图标（Windows 在右下角任务栏，Mac 在右上角菜单栏）→ Install AltStore → 选择你的设备 → 输入 Apple ID 登录。",
+      "ios.s5t": "信任开发者证书", "ios.s5d": "iPhone 上打开「设置 → 通用 → VPN 与设备管理」，点你的 Apple ID，选「信任」。然后就能打开 AltStore 了。",
+      "ios.s6t": "用 AltStore 安装树洞", "ios.s6d": "把第 1 步下载的 IPA 传到 iPhone（隔空投送 / 微信文件助手都行）。打开 AltStore → My Apps → 左上角「+」→ 选中那个 IPA → 等待安装完成。",
+      "ios.s7t": "完成，打开使用", "ios.s7d": "桌面上会出现「亦可赛艇」图标，点开即可使用。",
       "ios.note": "提示：免费 Apple 账号签名的应用有效期为 7 天，到期需重新签名。只要 iPhone 和电脑在同一 WiFi 下、AltServer 保持运行，AltStore 会自动续签。免费账号最多同时安装 3 个自签应用。也可用 Sideloadly 等工具，原理相同。",
-      "and.s1t": "下载 APK 安装包",
-      "and.s1d": "点击页面顶部「下载 APK」，文件会存到手机的下载目录。",
-      "and.s2t": "允许安装",
-      "and.s2d": "点开下载好的 APK，系统会提示「禁止安装未知应用」，点「设置」→ 允许此来源安装应用。",
-      "and.s3t": "完成安装",
-      "and.s3d": "返回后点「安装」，稍等片刻即可打开使用。",
-      "and.note": "提示：部分手机（如小米、华为）可能还会有二次安全确认或纯净模式拦截，按提示选择「继续安装 / 仍要安装」即可。",
+      "and.s1t": "下载 APK 安装包", "and.s1d": "点击页面顶部「下载 APK」，文件会存到手机的下载目录。",
+      "and.s2t": "允许安装", "and.s2d": "点开下载好的 APK，系统若提示「禁止安装未知应用」，点「设置」→ 允许此来源安装应用。",
+      "and.s3t": "完成安装", "and.s3d": "返回后点「安装」，稍等片刻即可打开使用。",
+      "and.note": "提示：部分手机（小米、华为等）可能还有二次安全确认或纯净模式拦截，按提示选择「继续安装 / 仍要安装」即可。",
       "footer.disc": "本项目为非官方客户端，由社区基于公开接口重建，与亦可赛艇官方无关。"
     },
     en: {
-      "hero.title": "treehole · SJTU campus forum",
-      "hero.sub": "Anonymous campus community client · iOS & Android",
-      "dl.androidSmall": "Android package",
-      "dl.androidBig": "Download APK",
-      "dl.iosSmall": "iOS package",
-      "dl.iosBig": "Download IPA",
-      "hero.hint": "After downloading, follow the guide below. iOS requires self-signing.",
-      "feat.title": "Features",
-      "feat.lead": "The same core experience as the official client",
-      "feat.f1t": "Timeline & Trending",
-      "feat.f1d": "Browse latest and hottest threads, filter by category and tag.",
-      "feat.f2t": "Post & Reply",
-      "feat.f2d": "Create threads, reply, and reply to a specific floor.",
-      "feat.f3t": "Anonymous identities",
-      "feat.f3d": "Claim, switch and delete identities; post with the chosen one.",
-      "feat.f4t": "Notifications",
-      "feat.f4d": "Replies and system messages, all in one place.",
-      "feat.f5t": "Search",
-      "feat.f5d": "Search threads across the whole forum by keyword.",
-      "feat.f6t": "Dark mode",
-      "feat.f6d": "Light / dark theme following the system.",
-      "install.title": "Install guide",
-      "install.lead": "Pick your platform and follow the steps",
-      "install.tabIos": "iOS",
-      "install.tabAndroid": "Android",
-      "ios.s1t": "Download the IPA",
-      "ios.s1d": "Click “Download IPA” at the top and save the file to your computer.",
-      "ios.s2t": "Install AltServer on a computer",
-      "ios.s2d": "Open altstore.io, download and install AltServer (Windows or Mac). On Windows you also need iTunes and iCloud (the versions from Apple's site, not the Microsoft Store).",
-      "ios.s3t": "Connect your iPhone with a cable",
-      "ios.s3d": "Plug your iPhone into the computer and tap “Trust This Computer” on the phone.",
-      "ios.s4t": "Install AltStore onto the iPhone",
-      "ios.s4d": "Click the AltServer icon (Windows: system tray, Mac: menu bar) → Install AltStore → pick your device → sign in with your Apple ID.",
-      "ios.s5t": "Trust the developer certificate",
-      "ios.s5d": "On the iPhone open Settings → General → VPN & Device Management, tap your Apple ID and choose Trust. You can now open AltStore.",
-      "ios.s6t": "Install treehole via AltStore",
-      "ios.s6d": "Transfer the IPA from step 1 to your iPhone (AirDrop, etc.). Open AltStore → My Apps → “+” in the top-left → select the IPA → wait for it to finish.",
-      "ios.s7t": "Done — open the app",
-      "ios.s7d": "The treehole icon appears on your home screen. Tap it to start.",
-      "ios.note": "Note: apps signed with a free Apple account expire after 7 days and must be re-signed. As long as the iPhone and computer are on the same Wi-Fi and AltServer keeps running, AltStore refreshes it automatically. A free account allows up to 3 sideloaded apps. Tools like Sideloadly work the same way.",
-      "and.s1t": "Download the APK",
-      "and.s1d": "Click “Download APK” at the top; the file goes to your phone's Downloads folder.",
-      "and.s2t": "Allow installation",
-      "and.s2d": "Open the downloaded APK. If the system blocks “unknown apps”, tap Settings and allow installs from this source.",
-      "and.s3t": "Finish installing",
-      "and.s3d": "Go back, tap Install, and the app is ready to open.",
+      "hero.t1": "treehole", "hero.t2": "SJTU's forum, in your pocket",
+      "hero.sub": "Anonymous campus community client · iOS & Android · rebuilt by the community from public APIs",
+      "hero.b1": "Timeline · Trending", "hero.b2": "Anonymous identities", "hero.b3": "Dark mode",
+      "dl.androidSmall": "Android package", "dl.androidBig": "Download APK",
+      "dl.iosSmall": "iOS package", "dl.iosBig": "Download IPA",
+      "hero.hint": "After downloading, follow the guide below · iOS requires self-signing",
+      "feat.kick": "Features",
+      "feat.title": "Everything you need", "feat.lead": "The same core experience as the official client",
+      "feat.f1t": "Timeline & Trending", "feat.f1d": "Browse latest and hottest threads; filter by category and tag.",
+      "feat.f2t": "Post & Reply", "feat.f2d": "Create threads, reply, and reply to a specific floor.",
+      "feat.f3t": "Anonymous identities", "feat.f3d": "Claim, switch and delete identities; post with the chosen one.",
+      "feat.f4t": "Notifications", "feat.f4d": "Replies and system messages, all in one place.",
+      "feat.f5t": "Search", "feat.f5d": "Search threads across the whole forum by keyword.",
+      "feat.f6t": "Dark mode", "feat.f6d": "Light / dark theme following the system.",
+      "install.kick": "Get Started",
+      "install.title": "Install guide", "install.lead": "Pick your platform and follow the steps",
+      "install.tabIos": "iOS", "install.tabAndroid": "Android",
+      "ios.s1t": "Download the IPA", "ios.s1d": "Click “Download IPA” at the top and save the file to your computer.",
+      "ios.s2t": "Install AltServer on a computer", "ios.s2d": "Open altstore.io, download and install AltServer (Windows or Mac). On Windows you also need iTunes and iCloud (the versions from Apple's site, not the Microsoft Store).",
+      "ios.s3t": "Connect your iPhone with a cable", "ios.s3d": "Plug your iPhone into the computer and tap “Trust This Computer” on the phone.",
+      "ios.s4t": "Install AltStore onto the iPhone", "ios.s4d": "Click the AltServer icon (Windows: system tray, Mac: menu bar) → Install AltStore → pick your device → sign in with your Apple ID.",
+      "ios.s5t": "Trust the developer certificate", "ios.s5d": "On the iPhone open Settings → General → VPN & Device Management, tap your Apple ID and choose Trust. You can now open AltStore.",
+      "ios.s6t": "Install treehole via AltStore", "ios.s6d": "Transfer the IPA from step 1 to your iPhone (AirDrop, etc.). Open AltStore → My Apps → “+” in the top-left → select the IPA → wait for it to finish.",
+      "ios.s7t": "Done — open the app", "ios.s7d": "The treehole icon appears on your home screen. Tap it to start.",
+      "ios.note": "Note: apps signed with a free Apple account expire after 7 days and must be re-signed. As long as the iPhone and computer share Wi-Fi and AltServer keeps running, AltStore refreshes it automatically. A free account allows up to 3 sideloaded apps. Tools like Sideloadly work the same way.",
+      "and.s1t": "Download the APK", "and.s1d": "Click “Download APK” at the top; the file goes to your phone's Downloads folder.",
+      "and.s2t": "Allow installation", "and.s2d": "Open the downloaded APK. If the system blocks “unknown apps”, tap Settings and allow installs from this source.",
+      "and.s3t": "Finish installing", "and.s3d": "Go back, tap Install, and the app is ready to open.",
       "and.note": "Note: some phones (Xiaomi, Huawei, etc.) add an extra security check or “pure mode” prompt. Just choose “Install anyway” when asked.",
       "footer.disc": "This is an unofficial client rebuilt by the community from public APIs. It is not affiliated with the official treehole."
     }
   };
 
   function apply(lang) {
-    var dict = I18N[lang];
+    var d = I18N[lang];
     document.documentElement.lang = lang === "zh" ? "zh" : "en";
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
       var k = el.getAttribute("data-i18n");
-      if (dict[k]) el.textContent = dict[k];
+      if (d[k]) el.textContent = d[k];
     });
     document.getElementById("langBtn").textContent = lang === "zh" ? "English" : "中文";
     try { localStorage.setItem("lang", lang); } catch (e) {}
   }
-
   var lang = "zh";
   try {
-    var saved = localStorage.getItem("lang");
-    if (saved) lang = saved;
+    var s = localStorage.getItem("lang");
+    if (s) lang = s;
     else if ((navigator.language || "").toLowerCase().indexOf("zh") !== 0) lang = "en";
   } catch (e) {}
   apply(lang);
-
   document.getElementById("langBtn").onclick = function () {
-    lang = lang === "zh" ? "en" : "zh";
-    apply(lang);
+    lang = lang === "zh" ? "en" : "zh"; apply(lang);
   };
 
-  // download links
   document.getElementById("dlAndroid").href = RELEASES;
   document.getElementById("dlIos").href = RELEASES;
   document.getElementById("ghLink").href = REPO;
 
-  // install tabs
-  var tabIos = document.getElementById("tabIos"),
-    tabAndroid = document.getElementById("tabAndroid"),
-    paneIos = document.getElementById("paneIos"),
-    paneAndroid = document.getElementById("paneAndroid");
+  var tabIos = document.getElementById("tabIos"), tabAndroid = document.getElementById("tabAndroid"),
+    paneIos = document.getElementById("paneIos"), paneAndroid = document.getElementById("paneAndroid");
   tabIos.onclick = function () {
     tabIos.classList.add("on"); tabAndroid.classList.remove("on");
     paneIos.classList.remove("hidden"); paneAndroid.classList.add("hidden");
+    revealAll();
   };
   tabAndroid.onclick = function () {
     tabAndroid.classList.add("on"); tabIos.classList.remove("on");
     paneAndroid.classList.remove("hidden"); paneIos.classList.add("hidden");
+    revealAll();
   };
+
+  // bubbles
+  (function () {
+    var host = document.getElementById("bubbles"), html = "";
+    for (var i = 0; i < 9; i++) {
+      var sz = 8 + Math.random() * 30, dur = 14 + Math.random() * 16,
+        left = Math.random() * 100, delay = Math.random() * 18;
+      html += '<span class="bubble" style="width:' + sz + 'px;height:' + sz +
+        'px;left:' + left + '%;animation-duration:' + dur + 's;animation-delay:-' + delay + 's"></span>';
+    }
+    host.innerHTML = html;
+  })();
+
+  // hero load-in (staggered)
+  document.querySelectorAll(".hero .reveal").forEach(function (el) {
+    var dl = parseInt(el.getAttribute("data-delay") || "0", 10);
+    el.style.transitionDelay = (dl * 0.09) + "s";
+    requestAnimationFrame(function () { setTimeout(function () { el.classList.add("in"); }, 60); });
+  });
+
+  // scroll reveal
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  function revealAll() {
+    document.querySelectorAll("section .reveal:not(.in)").forEach(function (el, i) {
+      el.style.transitionDelay = (Math.min(i, 6) * 0.05) + "s";
+      io.observe(el);
+    });
+  }
+  revealAll();
 </script>
 </body>
 </html>
