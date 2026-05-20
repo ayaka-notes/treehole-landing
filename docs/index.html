@@ -70,7 +70,7 @@
   }
   .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
   .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 16px; letter-spacing: .2px; }
-  .brand img { width: 32px; height: 32px; border-radius: 9px; }
+  .brand img { width: 32px; height: 32px; border-radius: 50%; }
   .langbtn {
     border: 1px solid var(--line); background: var(--glass); color: var(--ink);
     border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 600;
@@ -87,7 +87,7 @@
     filter: blur(14px);
   }
   .hero .logo {
-    width: 104px; height: 104px; border-radius: 26px;
+    width: 104px; height: 104px; border-radius: 50%;
     box-shadow: 0 20px 50px rgba(70,184,255,0.32);
   }
   .hero h1 {
@@ -95,6 +95,8 @@
     letter-spacing: -1.2px; line-height: 1.12;
   }
   .hero h1 .accent {
+    display: inline-block; margin-top: 8px;
+    font-size: 0.56em; font-weight: 600;
     background: var(--grad); -webkit-background-clip: text;
     background-clip: text; color: transparent;
   }
@@ -190,7 +192,7 @@
 
   /* ---- footer ---- */
   footer { border-top: 1px solid var(--line); padding: 40px 0 48px; text-align: center; }
-  footer .flogo { width: 34px; height: 34px; border-radius: 9px; opacity: .85; margin-bottom: 12px; }
+  footer .flogo { width: 34px; height: 34px; border-radius: 50%; opacity: .85; margin-bottom: 12px; }
   footer p { color: var(--faint); font-size: 12.5px; }
   footer a.gh {
     display: inline-flex; align-items: center; gap: 7px; margin-top: 14px;
@@ -232,6 +234,7 @@
   <div class="badges reveal" data-delay="3">
     <span class="badge" data-i18n="hero.b1"></span>
     <span class="badge" data-i18n="hero.b2"></span>
+    <span class="badge" data-i18n="hero.b3"></span>
   </div>
   <div class="dls reveal" data-delay="4">
     <a class="dl primary" id="dlAndroid" href="#">
@@ -325,9 +328,9 @@
 
   var I18N = {
     zh: {
-      "hero.t1": "亦可赛艇", "hero.t2": "交大树洞，随身一份",
+      "hero.t1": "亦可赛艇", "hero.t2": "又一个交大树洞",
       "hero.sub1": "匿名校园社区客户端", "hero.sub2": "iOS 与 Android 双端", "hero.sub3": "由社区基于公开接口重建",
-      "hero.b1": "时间线 · 热门", "hero.b2": "匿名身份",
+      "hero.b1": "时间线 · 热门", "hero.b2": "匿名身份", "hero.b3": "深夜食堂",
       "dl.androidSmall": "Android 安装包", "dl.androidBig": "下载 APK",
       "dl.iosSmall": "iOS 安装包", "dl.iosBig": "下载 IPA",
       "hero.hint": "下载后请按下方教程安装 · iOS 需自行签名",
@@ -358,9 +361,9 @@
       "footer.disc2": "免责说明：本网站只提供客户端，对后台接口返回的数据内容、合法性概不负责。"
     },
     en: {
-      "hero.t1": "treehole", "hero.t2": "SJTU's forum, in your pocket",
+      "hero.t1": "treehole", "hero.t2": "Yet another SJTU treehole",
       "hero.sub1": "Anonymous campus community client", "hero.sub2": "iOS & Android", "hero.sub3": "rebuilt by the community from public APIs",
-      "hero.b1": "Timeline · Trending", "hero.b2": "Anonymous identities",
+      "hero.b1": "Timeline · Trending", "hero.b2": "Anonymous identities", "hero.b3": "Late-night diner",
       "dl.androidSmall": "Android package", "dl.androidBig": "Download APK",
       "dl.iosSmall": "iOS package", "dl.iosBig": "Download IPA",
       "hero.hint": "After downloading, follow the guide below · iOS requires self-signing",
