@@ -206,6 +206,8 @@
   .hidden { display: none !important; }
 
   @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  /* 窄屏隐藏副标题里较次要的第三段，避免一行太长 */
+  @media (max-width: 560px) { .sub .sub-extra { display: none; } }
 </style>
 </head>
 <body>
@@ -226,7 +228,7 @@
   <h1 class="reveal" data-delay="1">
     <span data-i18n="hero.t1"></span><br /><span class="accent" data-i18n="hero.t2"></span>
   </h1>
-  <p class="sub reveal" data-delay="2" data-i18n="hero.sub"></p>
+  <p class="sub reveal" data-delay="2"><span data-i18n="hero.sub1"></span><span class="sep"> · </span><span data-i18n="hero.sub2"></span><span class="sep sub-extra"> · </span><span class="sub-extra" data-i18n="hero.sub3"></span></p>
   <div class="badges reveal" data-delay="3">
     <span class="badge" data-i18n="hero.b1"></span>
     <span class="badge" data-i18n="hero.b2"></span>
@@ -324,7 +326,7 @@
   var I18N = {
     zh: {
       "hero.t1": "亦可赛艇", "hero.t2": "交大树洞，随身一份",
-      "hero.sub": "匿名校园社区客户端 · iOS 与 Android 双端 · 由社区基于公开接口重建",
+      "hero.sub1": "匿名校园社区客户端", "hero.sub2": "iOS 与 Android 双端", "hero.sub3": "由社区基于公开接口重建",
       "hero.b1": "时间线 · 热门", "hero.b2": "匿名身份",
       "dl.androidSmall": "Android 安装包", "dl.androidBig": "下载 APK",
       "dl.iosSmall": "iOS 安装包", "dl.iosBig": "下载 IPA",
@@ -357,7 +359,7 @@
     },
     en: {
       "hero.t1": "treehole", "hero.t2": "SJTU's forum, in your pocket",
-      "hero.sub": "Anonymous campus community client · iOS & Android · rebuilt by the community from public APIs",
+      "hero.sub1": "Anonymous campus community client", "hero.sub2": "iOS & Android", "hero.sub3": "rebuilt by the community from public APIs",
       "hero.b1": "Timeline · Trending", "hero.b2": "Anonymous identities",
       "dl.androidSmall": "Android package", "dl.androidBig": "Download APK",
       "dl.iosSmall": "iOS package", "dl.iosBig": "Download IPA",
