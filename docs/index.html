@@ -415,6 +415,22 @@
   document.getElementById("dlIos").href = DL_IPA;
   document.getElementById("ghLink").href = REPO;
 
+  // 按访客系统高亮对应的下载按钮，并排到前面
+  (function () {
+    var ua = navigator.userAgent || "";
+    var isIOS = /iPhone|iPad|iPod/i.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var isAndroid = /Android/i.test(ua);
+    var aBtn = document.getElementById("dlAndroid");
+    var iBtn = document.getElementById("dlIos");
+    if (isIOS && !isAndroid) {
+      iBtn.className = "dl primary";
+      aBtn.className = "dl ghost";
+      iBtn.parentNode.insertBefore(iBtn, aBtn);
+    }
+    // Android 与桌面：保持默认（Android 高亮、在前）
+  })();
+
   var tabIos = document.getElementById("tabIos"), tabAndroid = document.getElementById("tabAndroid"),
     paneIos = document.getElementById("paneIos"), paneAndroid = document.getElementById("paneAndroid");
   tabIos.onclick = function () {
