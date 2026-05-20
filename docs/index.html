@@ -316,7 +316,9 @@
 </footer>
 
 <script>
-  var RELEASES = "https://github.com/ayaka-notes/treehole-app/releases/latest";
+  // 固定文件名 + /releases/latest/download/ —— 永久指向最新一次构建，发新版无需改页面。
+  var DL_APK = "https://github.com/ayaka-notes/treehole-landing/releases/latest/download/treehole.apk";
+  var DL_IPA = "https://github.com/ayaka-notes/treehole-landing/releases/latest/download/treehole-unsigned.ipa";
   var REPO = "https://github.com/ayaka-notes/treehole-app";
 
   var I18N = {
@@ -407,8 +409,8 @@
     lang = lang === "zh" ? "en" : "zh"; apply(lang);
   };
 
-  document.getElementById("dlAndroid").href = RELEASES;
-  document.getElementById("dlIos").href = RELEASES;
+  document.getElementById("dlAndroid").href = DL_APK;
+  document.getElementById("dlIos").href = DL_IPA;
   document.getElementById("ghLink").href = REPO;
 
   var tabIos = document.getElementById("tabIos"), tabAndroid = document.getElementById("tabAndroid"),
