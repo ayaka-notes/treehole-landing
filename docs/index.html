@@ -128,6 +128,26 @@
   .dl.ghost:hover { border-color: var(--aqua); }
   .vhint { color: var(--faint); font-size: 12.5px; margin-top: 20px; }
 
+  /* ---- one-tap store dropdown ---- */
+  .dl-wrap { position: relative; }
+  button.dl { font-family: inherit; cursor: pointer; }
+  .dl .caret { width: 16px; height: 16px; margin-left: auto; transition: transform .2s; }
+  .dl-wrap.open .caret { transform: rotate(180deg); }
+  .dl-menu {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 30;
+    background: #0e1626; border: 1px solid var(--line); border-radius: 14px;
+    padding: 6px; box-shadow: 0 20px 46px rgba(0,0,0,0.55);
+  }
+  .dl-opt {
+    display: flex; align-items: center; gap: 11px;
+    padding: 11px 13px; border-radius: 10px; transition: background .15s;
+  }
+  .dl-opt:hover { background: var(--glass); }
+  .dl-opt svg { width: 19px; height: 19px; flex: none; color: var(--aqua); }
+  .dl-opt .ot { line-height: 1.3; }
+  .dl-opt .ot .on1 { font-size: 14.5px; font-weight: 700; display: block; }
+  .dl-opt .ot .on2 { font-size: 11.5px; color: var(--faint); }
+
   /* ---- sections ---- */
   section { padding: 70px 0; }
   .kick {
@@ -245,10 +265,23 @@
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V3h4v8h3l-5 5zm-7 3h14v2H5v-2z"/></svg>
       <span class="tx"><span class="s" data-i18n="dl.iosSmall"></span><span class="b" data-i18n="dl.iosBig"></span></span>
     </a>
-    <a class="dl ghost" id="dlAltstore" href="#">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-      <span class="tx"><span class="s" data-i18n="dl.altSmall"></span><span class="b" data-i18n="dl.altBig"></span></span>
-    </a>
+    <div class="dl-wrap" id="dlStoreWrap">
+      <button class="dl ghost" id="dlStore" type="button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        <span class="tx"><span class="s" data-i18n="dl.storeSmall"></span><span class="b" data-i18n="dl.storeBig"></span></span>
+        <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="dl-menu hidden" id="dlStoreMenu">
+        <a class="dl-opt" id="optAltstore" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+          <span class="ot"><span class="on1">AltStore</span><span class="on2" data-i18n="dl.optAlt"></span></span>
+        </a>
+        <a class="dl-opt" id="optSidestore" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>
+          <span class="ot"><span class="on1">SideStore</span><span class="on2" data-i18n="dl.optSide"></span></span>
+        </a>
+      </div>
+    </div>
   </div>
   <p class="vhint reveal" data-delay="5" data-i18n="hero.hint"></p>
 </div>
@@ -337,7 +370,8 @@
       "hero.b1": "时间线 · 热门", "hero.b2": "匿名身份", "hero.b3": "深夜食堂",
       "dl.androidSmall": "Android 安装包", "dl.androidBig": "下载 APK",
       "dl.iosSmall": "iOS · 手动下载", "dl.iosBig": "下载 IPA",
-      "dl.altSmall": "iOS · 已装 AltStore", "dl.altBig": "AltStore 一键装",
+      "dl.storeSmall": "iOS · AltStore / SideStore", "dl.storeBig": "一键安装",
+      "dl.optAlt": "电脑端 AltServer 续签", "dl.optSide": "iPhone 上自行续签",
       "hero.hint": "下载后请按下方教程安装 · iOS 需自行签名",
       "feat.kick": "Features",
       "feat.title": "你需要的，都在这里", "feat.lead": "与官方客户端一致的核心体验",
@@ -357,7 +391,7 @@
       "ios.s5t": "信任开发者证书", "ios.s5d": "iPhone 上打开「设置 → 通用 → VPN 与设备管理」，点你的 Apple ID，选「信任」。然后就能打开 AltStore 了。",
       "ios.s6t": "用 AltStore 安装树洞", "ios.s6d": "把第 1 步下载的 IPA 传到 iPhone（隔空投送 / 微信文件助手都行）。打开 AltStore → My Apps → 左上角「+」→ 选中那个 IPA → 等待安装完成。",
       "ios.s7t": "完成，打开使用", "ios.s7d": "桌面上会出现「亦可赛艇」图标，点开即可使用。",
-      "ios.note": "提示：免费 Apple 账号签名的应用有效期为 7 天，到期需重新签名。只要 iPhone 和电脑在同一 WiFi 下、AltServer 保持运行，AltStore 会自动续签。免费账号最多同时安装 3 个自签应用。也可用 Sideloadly 等工具，原理相同。",
+      "ios.note": "提示：免费 Apple 账号签名的应用有效期为 7 天，到期需重新签名。只要 iPhone 和电脑在同一 WiFi 下、AltServer 保持运行，AltStore 会自动续签。若电脑不常在身边，可改用 SideStore，它能直接在 iPhone 上自行续签。免费账号最多同时安装 3 个自签应用。也可用 Sideloadly 等工具，原理相同。",
       "and.s1t": "下载 APK 安装包", "and.s1d": "点击页面顶部「下载 APK」，文件会存到手机的下载目录。",
       "and.s2t": "允许安装", "and.s2d": "点开下载好的 APK，系统若提示「禁止安装未知应用」，点「设置」→ 允许此来源安装应用。",
       "and.s3t": "完成安装", "and.s3d": "返回后点「安装」，稍等片刻即可打开使用。",
@@ -371,7 +405,8 @@
       "hero.b1": "Timeline · Trending", "hero.b2": "Anonymous identities", "hero.b3": "Late-night diner",
       "dl.androidSmall": "Android package", "dl.androidBig": "Download APK",
       "dl.iosSmall": "iOS · manual", "dl.iosBig": "Download IPA",
-      "dl.altSmall": "iOS · AltStore installed", "dl.altBig": "Open in AltStore",
+      "dl.storeSmall": "iOS · AltStore / SideStore", "dl.storeBig": "One-tap install",
+      "dl.optAlt": "Refreshed by AltServer on a PC", "dl.optSide": "Self-refresh on the iPhone",
       "hero.hint": "After downloading, follow the guide below · iOS requires self-signing",
       "feat.kick": "Features",
       "feat.title": "Everything you need", "feat.lead": "The same core experience as the official client",
@@ -391,7 +426,7 @@
       "ios.s5t": "Trust the developer certificate", "ios.s5d": "On the iPhone open Settings → General → VPN & Device Management, tap your Apple ID and choose Trust. You can now open AltStore.",
       "ios.s6t": "Install treehole via AltStore", "ios.s6d": "Transfer the IPA from step 1 to your iPhone (AirDrop, etc.). Open AltStore → My Apps → “+” in the top-left → select the IPA → wait for it to finish.",
       "ios.s7t": "Done — open the app", "ios.s7d": "The treehole icon appears on your home screen. Tap it to start.",
-      "ios.note": "Note: apps signed with a free Apple account expire after 7 days and must be re-signed. As long as the iPhone and computer share Wi-Fi and AltServer keeps running, AltStore refreshes it automatically. A free account allows up to 3 sideloaded apps. Tools like Sideloadly work the same way.",
+      "ios.note": "Note: apps signed with a free Apple account expire after 7 days and must be re-signed. As long as the iPhone and computer share Wi-Fi and AltServer keeps running, AltStore refreshes it automatically. If a computer isn't always nearby, use SideStore instead — it can re-sign right on the iPhone. A free account allows up to 3 sideloaded apps. Tools like Sideloadly work the same way.",
       "and.s1t": "Download the APK", "and.s1d": "Click “Download APK” at the top; the file goes to your phone's Downloads folder.",
       "and.s2t": "Allow installation", "and.s2d": "Open the downloaded APK. If the system blocks “unknown apps”, tap Settings and allow installs from this source.",
       "and.s3t": "Finish installing", "and.s3d": "Go back, tap Install, and the app is ready to open.",
@@ -424,10 +459,27 @@
 
   document.getElementById("dlAndroid").href = DL_APK;
   document.getElementById("dlIos").href = DL_IPA;
-  // 已装 AltStore 时，点这个直接跳进 AltStore 安装最新 IPA
-  document.getElementById("dlAltstore").href =
+  // 「一键安装」下拉的两个选项分别跳进 AltStore / SideStore 安装最新 IPA
+  document.getElementById("optAltstore").href =
     "altstore://install?url=" + encodeURIComponent(DL_IPA);
+  document.getElementById("optSidestore").href =
+    "sidestore://install?url=" + encodeURIComponent(DL_IPA);
   document.getElementById("ghLink").href = REPO;
+
+  // 「一键安装」下拉的开合：点按钮切换，点别处或选中某项后收起
+  (function () {
+    var wrap = document.getElementById("dlStoreWrap");
+    var btn = document.getElementById("dlStore");
+    var menu = document.getElementById("dlStoreMenu");
+    function close() { menu.classList.add("hidden"); wrap.classList.remove("open"); }
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var nowHidden = menu.classList.toggle("hidden");
+      wrap.classList.toggle("open", !nowHidden);
+    });
+    menu.addEventListener("click", function () { close(); });
+    document.addEventListener("click", close);
+  })();
 
   // 按访客系统高亮对应的下载按钮，并排到前面
   (function () {
@@ -437,14 +489,15 @@
     var isAndroid = /Android/i.test(ua);
     var aBtn = document.getElementById("dlAndroid");
     var iBtn = document.getElementById("dlIos");
-    var altBtn = document.getElementById("dlAltstore");
+    var storeWrap = document.getElementById("dlStoreWrap");
+    var storeBtn = document.getElementById("dlStore");
     if (isIOS && !isAndroid) {
-      // iOS：AltStore 一键为主，手动下载 IPA 次之，APK 最后
-      altBtn.className = "dl primary";
+      // iOS：「一键安装」为主，手动下载 IPA 次之，APK 最后
+      storeBtn.className = "dl primary";
       iBtn.className = "dl ghost";
       aBtn.className = "dl ghost";
-      var dls = altBtn.parentNode;
-      dls.appendChild(altBtn);
+      var dls = aBtn.parentNode;
+      dls.appendChild(storeWrap);
       dls.appendChild(iBtn);
       dls.appendChild(aBtn);
     }
